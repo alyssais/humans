@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# Load configuration file
+source "$(dirname $0)/config.sh"
+
+# Exit script on errors
+set -ue
+
+# Create a temporary directory to store the repository
+dir="$(mktemp -d)"
+
+# Clone the repository (only need the most recent commit)
+git clone --depth 1 "https://github.com/$owner/$repo" "$dir"
+
+# Enter repository
+cd "$dir"
+
+# Rewrite $file with data from GitHub
+echo "CONTRIBUTORS" > "$file"
+curl "https://api.github.com/repos/$owner/$repo/contributors" |
+  jq -r '.[].login | gsub( "^(?<d>.+)$"; "\(.d) - https://github.com/\(.d)")' >> "$file"
+
+# Configure Git
+git config user.name "$name"
+git config user.email "$email"
+
+# Commit and push change
+git commit "$file" -m "$message"
+git push origin HEAD
