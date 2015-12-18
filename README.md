@@ -10,7 +10,7 @@ Prerequisites
 
 The following software must be installed on your system:
 
-* [jq](https://stedolan.github.io/jq/).
+* [jq](https://stedolan.github.io/jq/)
 * [Git](http://git-scm.org)
 * [cURL](http://curl.haxx.se)
 
