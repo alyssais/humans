@@ -25,5 +25,6 @@ git config user.name "$name"
 git config user.email "$email"
 
 # Commit and push change
+# Will do nothing if there are no changes
 git commit "$file" -m "$message"
 git push origin HEAD
