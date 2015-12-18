@@ -3,6 +3,8 @@ humans
 
 Automatically update a GitHub repository with a list of contributors.
 
+This is especially useful for maintaining a [humans.txt](http://humanstxt.org) file on a [GitHub Pages](https://pages.github.com) site.
+
 **Note**: private repositories are not currently supported, but will be soon.
 
 Prerequisites
