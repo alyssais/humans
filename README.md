@@ -20,8 +20,8 @@ Installation
 ------------
 
 ```sh
-git clone https://github.com/alyssais/autocontributors
-cd autocontributors
+git clone https://github.com/alyssais/humans
+cd humans
 ./configure
 make install
 ```
@@ -29,8 +29,8 @@ make install
 Contributing
 ------------
 
-1. [Fork this repository](https://github.com/alyssais/autocontributors/fork)
+1. [Fork this repository](https://github.com/alyssais/humans/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. [Create a pull request](https://github.com/alyssais/autocontributors/pull/new/master)
+5. [Create a pull request](https://github.com/alyssais/humans/pull/new/master)
