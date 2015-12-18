@@ -1,3 +1,5 @@
+.PHONY: all install
+
 # Customisable
 SCHEDULE=@hourly # any valid cron expression
 

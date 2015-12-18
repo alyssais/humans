@@ -3,12 +3,14 @@ humans
 
 Automatically update a GitHub repository with a list of contributors.
 
+**Note**: private repositories are not currently supported, but will be soon.
+
 Prerequisites
 -------------
 
 The following software must be installed on your system:
 
-* [jq](https://stedolan.github.io/jq/).
+* [jq](https://stedolan.github.io/jq/)
 * [Git](http://git-scm.org)
 * [cURL](http://curl.haxx.se)
 
@@ -18,8 +20,8 @@ Installation
 ------------
 
 ```sh
-git clone https://github.com/alyssais/autocontributors
-cd autocontributors
+git clone https://github.com/alyssais/humans
+cd humans
 ./configure
 make install
 ```
@@ -27,8 +29,8 @@ make install
 Contributing
 ------------
 
-1. [Fork this repository](https://github.com/alyssais/autocontributors/fork)
+1. [Fork this repository](https://github.com/alyssais/humans/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. [Create a pull request](https://github.com/alyssais/autocontributors/pull/new/master)
+5. [Create a pull request](https://github.com/alyssais/humans/pull/new/master)
