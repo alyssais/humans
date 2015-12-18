@@ -10,7 +10,7 @@ set -ue
 dir="$(mktemp -d)"
 
 # Clone the repository (only need the most recent commit)
-git clone --depth 1 "https://github.com/$owner/$repo" "$dir"
+git clone --depth 1 "git@github.com:$owner/$repo" "$dir"
 
 # Enter repository
 cd "$dir"
