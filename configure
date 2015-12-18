@@ -30,8 +30,16 @@ help() {
 [ "$show_help" = "stdin" ] && help
 [ "$show_help" = "stderr" ] && >&2 help
 
-# Read existing configuration
-source config.sh 2> /dev/null
+# Declare config variables in case config.sh doesn't
+owner=
+repo=
+file=
+name=
+email=
+message=
+
+# Read existing configuration if it exists
+(source config.sh 2> /dev/null) || true
 
 while :; do
   printf "GitHub repository owner: "
