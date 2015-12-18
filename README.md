@@ -28,7 +28,9 @@ make install
 
 You can also specify how often to check for contributors when running `make install`:
 
-	make install SCHEDULE="0 * * * *"
+```sh
+make install SCHEDULE="0 * * * *"
+```
 	
 `SCHEDULE` can be set to any valid [CRON expression](https://en.wikipedia.org/wiki/Cron#CRON_expression).
 
