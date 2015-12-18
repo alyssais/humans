@@ -26,7 +26,7 @@ cd humans
 make install
 ```
 
-You can also specify how often to check for contributors when running `make install`:
+You can also specify how often to check for contributors when running `make install` (defaults to hourly):
 
 ```sh
 make install SCHEDULE="0 * * * *"
