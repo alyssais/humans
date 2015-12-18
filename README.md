@@ -3,6 +3,8 @@ humans
 
 Automatically update a GitHub repository with a list of contributors.
 
+**Note**: private repositories are not currently supported, but will be soon.
+
 Prerequisites
 -------------
 
