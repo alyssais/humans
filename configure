@@ -138,26 +138,26 @@ while :; do
 	fi
 done
 
-test -z "$file" && file=CONTRIBUTORS
+[ -z "$file" ] && file=CONTRIBUTORS
 printf "Contributors file path: ($file) "
 read i_file
-test -n "$i_file" && file="$i_file"
+[ -n "$i_file" ] && file="$i_file"
 
-test -z "$name" && name="A Friendly Bot"
+[ -z "$name" ] && name="A Friendly Bot"
 printf "Bot name: ($name) "
 read i_name
-test -n "$i_name" && name="$i_name"
+[ -n "$i_name" ] && name="$i_name"
 
-test -z "$email" &&
+[ -z "$email" ] &&
 	email="$(echo "$name" | sed "s/ /./g" | tr '[:upper:]' '[:lower:]')@example"
 printf "Bot email: ($email) "
 read i_email
-test -n "$i_email" && email="$i_email"
+[ -n "$i_email" ] && email="$i_email"
 
-test -z "$message" && message="Update $file"
+[ -z "$message" ] && message="Update $file"
 printf "Commit message: ($message) "
 read i_message
-test -n "$i_message" && message="$i_message"
+[ -n "$i_message" ] && message="$i_message"
 
 printf "owner=%q\n"     "$owner"      > config.sh
 printf "repo=%q\n"      "$repo"      >> config.sh
