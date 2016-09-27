@@ -37,23 +37,105 @@ name=
 email=
 message=
 
-# Read existing configuration if it exists
-(source config.sh 2> /dev/null) || true
+[ -f config.sh ] && source config.sh
+
+check() {
+	$@ > /dev/null 2>&1;
+	local ret="$?"
+	if [ "$ret" = 0 ]; then
+		echo "\033[32;32mok\033[0m" # ok
+	else
+		echo "\033[31;31merror\033[0m"
+	fi
+	return $ret
+}
 
 while :; do
-	printf "GitHub repository owner: "
-	test -n "$owner" && printf "($owner) "
-	read i_owner
-	test -n "$i_owner" && owner="$i_owner"
-	test -n "$owner" && break
-done
+	while :; do
+		printf "GitHub repository owner: "
+		[ -n "$owner" ] && printf "($owner) "
+		read -r i_owner
+		[ -z "$i_owner" ] && i_owner="$owner"
+		[ -n "$i_owner" ] && break
+	done
 
-while :; do
-	printf "GitHub repository name: "
-	test -n "$repo" && printf "($repo) "
-	read i_repo
-	test -n "$i_repo" && repo="$i_repo"
-	test -n "$repo" && break
+	while :; do
+		printf "GitHub repository name: "
+		[ -n "$repo" ] && printf "($repo) "
+		read -r i_repo
+		[ -z "$i_repo" ] && i_repo="$repo"
+		[ -n "$i_repo" ] && break
+	done
+
+	# TODO: check no output
+	printf "checking $i_owner/$i_repo exists... "
+	check curl -Isf "https://api.github.com/repos/$i_owner/$i_repo" && break
+
+	# Invalid repository specified
+	read -rp "Is $i_owner/$i_repo definitely correct? (y/N) " yn
+	if [ "$yn" = y ] || [ "$yn" = Y ]; then
+
+		owner="$i_owner"
+		repo="$i_repo"
+
+		read -rp "Is $i_owner/$i_repo a private repository? (y/N) " yn
+		[ "$yn" != y ] && [ "$yn" != Y ] && break
+
+		if [ -n "$api_token" ]; then
+			echo "An API token is already set:"
+			echo "  $api_token"
+			read -rp "Should this token be replaced? (y/N) " yn
+			[ "$yn" != y ] && [ "$yn" != Y ] && break
+		fi
+
+		# Repository is private
+		while :; do
+			echo "humans needs to be authorized to access $i_owner/$i_repo."
+			echo "Please create a token with 'repo' permissions here:"
+			echo "  \033[4;34mhttps://github.com/settings/tokens/new\033[0m"
+			echo "Alternatively, hit return without entering anything to have humans" \
+				"create one for you."
+			printf "GitHub API token: "
+			read -r i_api_token
+			[ -n "$i_api_token" ] && break
+
+			# Generate an API token
+			read -rp "Your GitHub username: ($i_owner) " i_auth_user
+			read -rsp "Your GitHub password: " i_auth_password
+			echo # output blank line after password
+
+			[ "$i_auth_user" ] || i_auth_user="$i_owner"
+
+			github() {
+				curl -s https://api.github.com/$1 \
+					-u "$i_auth_user:$i_auth_password" \
+					-H "Content-Type: application/json" \
+					-H "Accept: application/vnd.github.v3+json" \
+					$(shift 1; echo $@)
+			}
+			response=$(github authorizations -X POST -d @- <<-JSON
+				{
+					"scopes": [
+						"repo"
+					],
+					"note": "humans@$(hostname)$(pwd)",
+					"note_url": "https://github.com/alyssais/humans"
+				}
+				JSON
+			)
+			if echo "$response" | grep '"token"'; then
+				echo "$response" | jq -r .token | read i_api_token
+			else
+				printf "\033[31;31mError: \033[0m"
+				echo "$response" | jq -r .message
+				echo "You'll need to create a GitHub API token manually."
+			fi
+
+			[ -n "$i_api_token" ] && break
+		done
+
+		break
+	fi
 done
 
 test -z "$file" && file=CONTRIBUTORS
@@ -77,11 +159,12 @@ printf "Commit message: ($message) "
 read i_message
 test -n "$i_message" && message="$i_message"
 
-printf "owner=%q\n"   "$owner"    > config.sh
-printf "repo=%q\n"    "$repo"    >> config.sh
-printf "file=%q\n"    "$file"    >> config.sh
-printf "name=%q\n"    "$name"    >> config.sh
-printf "email=%q\n"   "$email"   >> config.sh
-printf "message=%q\n" "$message" >> config.sh
+printf "owner=%q\n"     "$owner"      > config.sh
+printf "repo=%q\n"      "$repo"      >> config.sh
+printf "file=%q\n"      "$file"      >> config.sh
+printf "name=%q\n"      "$name"      >> config.sh
+printf "email=%q\n"     "$email"     >> config.sh
+printf "message=%q\n"   "$message"   >> config.sh
+printf "api_token=%q\n" "$api_token" >> config.sh
 
 echo "Successfully wrote configuration to config.sh"

@@ -21,7 +21,9 @@ cd "$dir"
 
 # Rewrite $file with data from GitHub
 echo "CONTRIBUTORS" > "$file"
-curl "https://api.github.com/repos/$owner/$repo/contributors" |
+url="https://api.github.com/repos/$owner/$repo/contributors"
+[ -n "$access_token" ] && url="$url?access_token=$access_token"
+curl "$url" |
   jq -r '.[].login | gsub( "^(?<d>.+)$"; "\(.d) - https://github.com/\(.d)")' >> "$file"
 
 # Configure Git
