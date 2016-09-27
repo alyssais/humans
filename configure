@@ -6,27 +6,26 @@ set -ue
 # Read arguments
 show_help=
 for arg in "$@"; do
-  case "$arg" in
-   "-h"|--help)
-      show_help=stdin
-      ;;
-    *)
-      >&2 echo "Unrecognized argument: $arg"
-      show_help=stderr
-      break
-      ;;
-  esac
+	case "$arg" in
+		"-h"|--help)
+			show_help=stdin
+			;;
+		*)
+			>&2 echo "Unrecognized argument: $arg"
+			show_help=stderr
+			break
+			;;
+	esac
 done
 
 # Display help if necessary
 help() {
-  echo "Usage: $(basename "$0") [options]"
-  echo "  -h, --help                  print this message and exit"
-  echo
-  echo "Report bugs at https://github.com/alyssais/humans/issues"
-  exit
+	echo "Usage: $(basename "$0") [options]"
+	echo "  -h, --help                  print this message and exit"
+	echo
+	echo "Report bugs at https://github.com/alyssais/humans/issues"
+	exit
 }
-
 [ "$show_help" = "stdin" ] && help
 [ "$show_help" = "stderr" ] && >&2 help
 
@@ -42,19 +41,19 @@ message=
 (source config.sh 2> /dev/null) || true
 
 while :; do
-  printf "GitHub repository owner: "
-  test -n "$owner" && printf "($owner) "
-  read i_owner
-  test -n "$i_owner" && owner="$i_owner"
-  test -n "$owner" && break
+	printf "GitHub repository owner: "
+	test -n "$owner" && printf "($owner) "
+	read i_owner
+	test -n "$i_owner" && owner="$i_owner"
+	test -n "$owner" && break
 done
 
 while :; do
-  printf "GitHub repository name: "
-  test -n "$repo" && printf "($repo) "
-  read i_repo
-  test -n "$i_repo" && repo="$i_repo"
-  test -n "$repo" && break
+	printf "GitHub repository name: "
+	test -n "$repo" && printf "($repo) "
+	read i_repo
+	test -n "$i_repo" && repo="$i_repo"
+	test -n "$repo" && break
 done
 
 test -z "$file" && file=CONTRIBUTORS
@@ -68,7 +67,7 @@ read i_name
 test -n "$i_name" && name="$i_name"
 
 test -z "$email" &&
-  email="$(echo "$name" | sed "s/ /./g" | tr '[:upper:]' '[:lower:]')@example"
+	email="$(echo "$name" | sed "s/ /./g" | tr '[:upper:]' '[:lower:]')@example"
 printf "Bot email: ($email) "
 read i_email
 test -n "$i_email" && email="$i_email"

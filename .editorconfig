@@ -11,5 +11,5 @@ insert_final_newline = true
 [**.{markdown,mdown,mkdn,md,mkd,mdwn,mdtxt,mdtext,text}]
 trim_trailing_whitespace = false
 
-[Makefile]
+[{Makefile,configure}]
 indent_style = tab
