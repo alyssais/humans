@@ -4,11 +4,14 @@
 set -ue
 
 # Load configuration file
-if ! (source config.sh 2> /dev/null); then
-  echo >&2 "Could not find $(dirname "$0")/config.sh"
+config_file=$(dirname "$0")/config.sh
+if [ ! -f "$config_file" ]; then
+  echo >&2 "Could not find $config_file"
   echo >&2 "Run $(dirname "$0")/configure to create it"
   exit 1
 fi
+
+. "$config_file"
 
 # Create a temporary directory to store the repository
 dir="$(mktemp -d)"
