@@ -36,6 +36,7 @@ file=
 name=
 email=
 message=
+api_token=
 
 [ -f config.sh ] && source config.sh
 
