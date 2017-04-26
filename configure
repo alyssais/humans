@@ -36,7 +36,7 @@ file=
 name=
 email=
 message=
-api_token=
+access_token=
 
 [ -f config.sh ] && source config.sh
 
@@ -82,9 +82,9 @@ while :; do
 		read -rp "Is $i_owner/$i_repo a private repository? (y/N) " yn
 		[ "$yn" != y ] && [ "$yn" != Y ] && break
 
-		if [ -n "$api_token" ]; then
+		if [ -n "$access_token" ]; then
 			echo "An API token is already set:"
-			echo "  $api_token"
+			echo "  $access_token"
 			read -rp "Should this token be replaced? (y/N) " yn
 			[ "$yn" != y ] && [ "$yn" != Y ] && break
 		fi
@@ -97,8 +97,8 @@ while :; do
 			echo "Alternatively, hit return without entering anything to have humans" \
 				"create one for you."
 			printf "GitHub API token: "
-			read -r i_api_token
-			[ -n "$i_api_token" ] && break
+			read -r i_access_token
+			[ -n "$i_access_token" ] && break
 
 			# Generate an API token
 			read -rp "Your GitHub username: ($i_owner) " i_auth_user
@@ -125,14 +125,14 @@ while :; do
 				JSON
 			)
 			if echo "$response" | grep '"token"'; then
-				echo "$response" | jq -r .token | read i_api_token
+				echo "$response" | jq -r .token | read i_access_token
 			else
 				printf "\033[31;31mError: \033[0m"
 				echo "$response" | jq -r .message
 				echo "You'll need to create a GitHub API token manually."
 			fi
 
-			[ -n "$i_api_token" ] && break
+			[ -n "$i_access_token" ] && break
 		done
 
 		break
@@ -160,12 +160,12 @@ printf "Commit message: ($message) "
 read i_message
 [ -n "$i_message" ] && message="$i_message"
 
-printf "owner=%q\n"     "$owner"      > config.sh
-printf "repo=%q\n"      "$repo"      >> config.sh
-printf "file=%q\n"      "$file"      >> config.sh
-printf "name=%q\n"      "$name"      >> config.sh
-printf "email=%q\n"     "$email"     >> config.sh
-printf "message=%q\n"   "$message"   >> config.sh
-printf "api_token=%q\n" "$api_token" >> config.sh
+printf "owner=%q\n"        "$owner"         > config.sh
+printf "repo=%q\n"         "$repo"         >> config.sh
+printf "file=%q\n"         "$file"         >> config.sh
+printf "name=%q\n"         "$name"         >> config.sh
+printf "email=%q\n"        "$email"        >> config.sh
+printf "message=%q\n"      "$message"      >> config.sh
+printf "access_token=%q\n" "$access_token" >> config.sh
 
 echo "Successfully wrote configuration to config.sh"
