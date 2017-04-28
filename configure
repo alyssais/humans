@@ -135,6 +135,8 @@ while :; do
 			[ -n "$i_access_token" ] && break
 		done
 
+    [ -n "$i_access_token" ] && access_token="$i_access_token"
+
 		break
 	fi
 done
